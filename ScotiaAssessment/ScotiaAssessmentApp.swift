@@ -1,0 +1,17 @@
+//
+//  ScotiaAssessmentApp.swift
+//  ScotiaAssessment
+//
+//  Created by Grigor Grigoryan on 2026-06-03.
+//
+
+import SwiftUI
+
+@main
+struct ScotiaAssessmentApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
