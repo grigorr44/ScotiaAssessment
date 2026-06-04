@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+enum TransactionType: Equatable {
+    case credit
+    case debit
+}
