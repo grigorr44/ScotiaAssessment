@@ -12,6 +12,8 @@ struct TransactionListView: View {
 
     private var viewModel: TransactionListViewModel
 
+    @State private var router = Router()
+
     // MARK: - Initialiser
 
     init(viewModel: TransactionListViewModel) {
@@ -19,17 +21,21 @@ struct TransactionListView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $router.path) {
             content
                 .navigationTitle("Transacton")
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationDestination(for: Transaction.self, destination: { item in
-                    Text("sss")
-                })
+                .navigationDestination(for: AppRoute.self) { rout in
+                    switch rout {
+                    case .transactionDetail(let transaction):
+                        TransactionDetailsView()
+                    }
+                }
                 .task {
                     await viewModel.fetchTransactions()
                 }
         }
+        .environment(router) // Share via environment to prevent prop
     }
 
     @ViewBuilder
@@ -41,7 +47,7 @@ struct TransactionListView: View {
             errorView(error.localizedCapitalized)
         case .success:
             List(viewModel.transactions) { transaction in
-                NavigationLink(value: transaction) {
+                NavigationLink(value: AppRoute.transactionDetail(transaction)) {
                     TransactionItemView(transaction: transaction)
                 }
             }
