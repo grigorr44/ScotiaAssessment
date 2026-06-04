@@ -15,7 +15,7 @@ final class TransactionListViewModel {
     // MARK: Properties
 
     private(set) var transactions: [Transaction] = []
-    private(set) var state: TransactionListState = .idle
+    private(set) var loadingState: TransactionListState = .idle
     private let transactionService: TransactionService
 
     // MARK: Initialization
@@ -27,20 +27,20 @@ final class TransactionListViewModel {
     // MARK: Functions
 
     func fetchTransactions() async {
-        state = .loading
+        loadingState = .loading
         do {
             transactions = try await transactionService.fetchTransactions()
-            state = .success
+            loadingState = .success
         } catch {
-            state = .error(error.localizedDescription)
+            loadingState = .error(error.localizedDescription)
         }
     }
 }
 
-
+/// Represents the loading state of the transaction list screen.
 enum TransactionListState {
-    case idle      // The view has just appeared and no action has been taken yet
-    case loading   // The API call is actively running
-    case success   // Data loaded successfully
-    case error(String)   // An error occurred
+    case idle
+    case loading
+    case success
+    case error(String)
 }

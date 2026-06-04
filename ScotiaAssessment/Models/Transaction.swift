@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Transaction: Identifiable, Equatable {
+struct Transaction: Identifiable, Equatable, Hashable {
     let id: String
     let type: TransactionType
     let merchantName: String

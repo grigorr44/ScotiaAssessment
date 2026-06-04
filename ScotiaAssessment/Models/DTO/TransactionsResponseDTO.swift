@@ -8,7 +8,5 @@
 import Foundation
 
 struct TransactionsResponseDTO: Decodable {
-
     let transactions: [TransactionDTO]
-
 }
