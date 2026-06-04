@@ -23,6 +23,9 @@ struct TransactionListView: View {
             content
                 .navigationTitle("Transacton")
                 .navigationBarTitleDisplayMode(.inline)
+                .navigationDestination(for: Transaction.self, destination: { item in
+                    Text("sss")
+                })
                 .task {
                     await viewModel.fetchTransactions()
                 }
