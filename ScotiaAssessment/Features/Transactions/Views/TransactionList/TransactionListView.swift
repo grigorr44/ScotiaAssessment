@@ -23,7 +23,7 @@ struct TransactionListView: View {
     var body: some View {
         NavigationStack(path: $router.path) {
             content
-                .navigationTitle("Transactons")
+                .navigationTitle("Transactions")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(Color.white, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
