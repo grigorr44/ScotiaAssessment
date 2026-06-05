@@ -25,6 +25,7 @@ final class NetworkClientImpl: NetworkClient {
 
         let data = try Data(contentsOf: url)
         do {
+            try await Task.sleep(for: .seconds(1)) // Simulation of real network request
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
             throw NetworkError.decodingFailed
