@@ -20,18 +20,18 @@ struct TransactionItemView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            HStack(alignment: .top) {
+            HStack(alignment: .top, spacing: AppSpacing.medium) {
                 Text(transaction.merchantName)
-                    .font(.headline)
-                    .fontWeight(.semibold)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(2)
                     .truncationMode(.tail) // Depending on the business requirements.
 
                 Text(transaction.amount.formatted(.currency(code: transaction.currency)))
-                    .font(.headline)
-                    .fontWeight(.bold)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
                     .frame(alignment: .leading)
                     .lineLimit(1)
                     .layoutPriority(1)

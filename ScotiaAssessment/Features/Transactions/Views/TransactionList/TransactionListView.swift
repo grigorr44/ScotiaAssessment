@@ -34,11 +34,12 @@ struct TransactionListView: View {
                     }
                 }
                 .task {
+                    // Load transactions when the list screen appears.
+                    // Refresh behavior can be adjusted later based on business needs.
                     await viewModel.fetchTransactions()
                 }
         }
-        
-        .environment(router) // Share via environment to prevent prop
+        .environment(router)
     }
 
     @ViewBuilder

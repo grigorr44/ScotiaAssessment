@@ -20,8 +20,6 @@ struct TransactionDetailsItemView: View {
                 .foregroundStyle(.secondary)
 
             Text(value)
-//                .font(.subheadline)
-//                .foregroundStyle(.primary)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
         }
