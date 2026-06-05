@@ -11,7 +11,6 @@ import Observation
 @MainActor
 @Observable
 final class Router {
-
     // MARK: Properties
 
     var path: [AppRoute] = []

@@ -11,7 +11,9 @@ import SwiftUI
 struct ScotiaAssessmentApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TransactionListView(
+                viewModel: .init(transactionService: TransactionServiceImpl())
+            )
         }
     }
 }

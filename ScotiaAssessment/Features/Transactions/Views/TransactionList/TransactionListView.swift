@@ -23,18 +23,21 @@ struct TransactionListView: View {
     var body: some View {
         NavigationStack(path: $router.path) {
             content
-                .navigationTitle("Transacton")
+                .navigationTitle("Transactons")
                 .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(Color.white, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
                 .navigationDestination(for: AppRoute.self) { rout in
                     switch rout {
                     case .transactionDetail(let transaction):
-                        TransactionDetailsView()
+                        TransactionDetailsView(viewModel: .init(transaction: transaction))
                     }
                 }
                 .task {
                     await viewModel.fetchTransactions()
                 }
         }
+        
         .environment(router) // Share via environment to prevent prop
     }
 
@@ -55,7 +58,7 @@ struct TransactionListView: View {
     }
 
     private func errorView(_ errorMessage: String) -> some View {
-        VStack(spacing: 12) {
+        VStack(spacing: AppSpacing.small) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.largeTitle)
                 .foregroundStyle(.white, .red)

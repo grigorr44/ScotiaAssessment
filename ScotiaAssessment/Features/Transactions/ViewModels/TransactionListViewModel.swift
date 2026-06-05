@@ -11,7 +11,6 @@ import Observation
 @MainActor
 @Observable
 final class TransactionListViewModel {
-
     // MARK: Properties
 
     private(set) var transactions: [Transaction] = []
