@@ -19,8 +19,8 @@ struct TransactionItemView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack(alignment: .top, spacing: AppSpacing.medium) {
+        HStack(alignment: .center, spacing: AppSpacing.medium) {
+            VStack(alignment: .leading) {
                 Text(transaction.merchantName)
                     .font(.subheadline)
                     .fontWeight(.medium)
@@ -29,21 +29,21 @@ struct TransactionItemView: View {
                     .lineLimit(2)
                     .truncationMode(.tail) // Depending on the business requirements.
 
-                Text(transaction.amount.formatted(.currency(code: transaction.currency)))
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .frame(alignment: .leading)
-                    .lineLimit(1)
-                    .layoutPriority(1)
+                if let description = transaction.description {
+                    Text(description)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                        .truncationMode(.tail)
+                }
             }
 
-            if let description = transaction.description {
-                Text(description)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-                    .truncationMode(.tail)
-            }
+            Text(transaction.amount.formatted(.currency(code: transaction.currency)))
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .frame(alignment: .leading)
+                .lineLimit(1)
+                .layoutPriority(1)
         }
     }
 }
