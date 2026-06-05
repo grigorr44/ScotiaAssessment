@@ -23,18 +23,16 @@ struct TransactionDetailsView: View {
 
     var body: some View {
         VStack {
-            VStack(spacing: AppSpacing.xxxLarge) {
-                header
-                detailsSection
-                Spacer()
+            VStack(spacing: 0) {
+                content
+
                 closeButton
+                    .padding(AppSpacing.xLarge)
             }
-            .padding(AppSpacing.xLarge)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .background(Color.white)
             .cornerRadius(AppCornerRadius.large)
             .shadow(radius: 1)
-
-            Spacer()
         }
         .padding(AppSpacing.medium)
         .background(Color(.systemGroupedBackground))
@@ -42,6 +40,18 @@ struct TransactionDetailsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.white, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+    }
+
+    private var content: some View {
+        ScrollView {
+            VStack(spacing: AppSpacing.xxxLarge) {
+                header
+                detailsSection
+
+                TransactionTooltipView()
+            }
+            .padding(AppSpacing.xLarge)
+        }
     }
 
     private var header: some View {
