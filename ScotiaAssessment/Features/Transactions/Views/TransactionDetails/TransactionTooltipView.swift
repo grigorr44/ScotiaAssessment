@@ -21,23 +21,16 @@ struct TransactionTooltipView: View {
                 .foregroundStyle(.secondary)
 
             VStack(spacing: AppSpacing.xLarge) {
-                Text(tooltipTitle)
+                Text(titleAttributedText)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                if isExpanded {
-                    Text(tooltipDetails)
+                if let detailsAttributedText {
+                    Text(detailsAttributedText)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .transition(.opacity.combined(with: .opacity))
+                        .transition(.opacity)
                 }
             }
-            .font(.subheadline.pointSize(14))
-            .foregroundStyle(.primary)
-            .tint(.blue)
-            .animation(.spring, value: isExpanded)
-            .fixedSize(horizontal: false, vertical: true)
-            .environment(\.openURL, OpenURLAction { url in
-                handleURL(url)
-            })
+            .animation(.spring(duration: 0.25), value: isExpanded)
         }
         .padding(AppSpacing.xLarge)
         .background(Color.white)
@@ -45,39 +38,44 @@ struct TransactionTooltipView: View {
             RoundedRectangle(cornerRadius: AppCornerRadius.small)
                 .stroke(Color.gray.opacity(0.25), lineWidth: 1)
         }
-        .shadow(color: .black.opacity(0.1), radius: 16, x: 8, y: 8)
+        .shadow(color: .black.opacity(0.08), radius: 16, x: 0, y: 8)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            withAnimation(.spring(duration: 0.25)) {
+                isExpanded.toggle()
+            }
+        }
     }
 
     // MARK: - Private Properties
 
-    private var tooltipTitle: AttributedString {
-        let markdown = isExpanded
-            ? Constants.title
-            : Constants.title + " " + Constants.showMoreLink
+    private var titleAttributedText: AttributedString {
+        let title = makeText(Constants.title, color: .primary)
+        let button = makeText(Constants.showMoreLink, color: .blue, isBold: true)
 
-        return makeAttributedString(from: markdown)
+        return isExpanded ? title : title + " " + button
     }
 
-    private var tooltipDetails: AttributedString {
-        makeAttributedString(from: Constants.details + " " + Constants.showLessLink)
+    private var detailsAttributedText: AttributedString? {
+        guard isExpanded else { return nil }
+
+        let details = makeText(Constants.details, color: .primary)
+        let button = makeText(Constants.showLessLink, color: .blue, isBold: true)
+
+        return details + " " + button
     }
 
     // MARK: - Private Methods
 
-    private func handleURL(_ url: URL) -> OpenURLAction.Result {
-        guard url.absoluteString == Constants.toggleURL else {
-            return .systemAction
-        }
-
-        withAnimation(.interactiveSpring(duration: 0.2)) {
-            isExpanded.toggle()
-        }
-
-        return .handled
-    }
-
-    private func makeAttributedString(from markdown: String) -> AttributedString {
-        (try? AttributedString(markdown: markdown)) ?? AttributedString(markdown)
+    private func makeText(
+        _ value: String,
+        color: Color,
+        isBold: Bool = false
+    ) -> AttributedString {
+        var result = AttributedString(value)
+        result.font = isBold ? .subheadline.pointSize(14).bold() : .subheadline.pointSize(14)
+        result.foregroundColor = color
+        return result
     }
 }
 
@@ -85,13 +83,11 @@ struct TransactionTooltipView: View {
 
 private extension TransactionTooltipView {
     enum Constants {
-        static let toggleURL = "action://toggle-tooltip"
-
         static let title = "Transactions are processed Monday to Friday (excluding holidays)."
         static let details = "Transactions made before 8:30 pm ET Monday to Friday (excluding holidays) will show up in your account the same day."
 
-        static let showMoreLink = "[Show more](\(toggleURL))"
-        static let showLessLink = "[Show less](\(toggleURL))"
+        static let showMoreLink = "Show more"
+        static let showLessLink = "Show less"
     }
 }
 
